@@ -1,7 +1,7 @@
 object MainForm: TMainForm
   Left = 0
   Top = 0
-  Caption = 'My MD5SUM'
+  Caption = 'Magic MD5SUM v1.0'
   ClientHeight = 442
   ClientWidth = 682
   Color = clBtnFace
