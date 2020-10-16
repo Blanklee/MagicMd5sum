@@ -2,7 +2,7 @@
 
 Overview : Windows Graphic UI Program of md5sum, Easy to use.
 
-Tools : Developed with Delphi XE8 using Indy component.
+Tools : Developed with Delphi 10.4 using Indy component.
 
 Usage : Just drop files and click RUN button.
 
