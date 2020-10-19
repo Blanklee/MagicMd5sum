@@ -1,7 +1,7 @@
 object MainForm: TMainForm
   Left = 0
   Top = 0
-  Caption = 'Magic MD5SUM v1.0'
+  Caption = 'Magic MD5SUM v1.1'
   ClientHeight = 442
   ClientWidth = 682
   Color = clBtnFace
@@ -16,6 +16,13 @@ object MainForm: TMainForm
     442)
   PixelsPerInch = 96
   TextHeight = 16
+  object Label1: TLabel
+    Left = 16
+    Top = 392
+    Width = 64
+    Height = 16
+    Caption = 'Progress'
+  end
   object Memo1: TMemo
     Left = 16
     Top = 8
@@ -66,6 +73,11 @@ object MainForm: TMainForm
   end
   object IdAntiFreeze1: TIdAntiFreeze
     Left = 80
+    Top = 64
+  end
+  object Timer1: TTimer
+    OnTimer = Timer1Timer
+    Left = 224
     Top = 64
   end
 end

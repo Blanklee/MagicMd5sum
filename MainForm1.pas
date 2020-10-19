@@ -5,7 +5,7 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes,
   Vcl.StdCtrls, Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs,
-  IdBaseComponent, IdAntiFreezeBase, FileDrop, IdAntiFreeze;
+  IdBaseComponent, IdAntiFreezeBase, FileDrop, IdAntiFreeze, Vcl.ExtCtrls;
 
 type
   TMainForm = class(TForm)
@@ -15,12 +15,16 @@ type
     FileDrop1: TFileDrop;
     Memo1: TMemo;
     IdAntiFreeze1: TIdAntiFreeze;
+    Label1: TLabel;
+    Timer1: TTimer;
     procedure FileDrop1Drop(Sender: TObject);
     procedure Button1Click(Sender: TObject);
     procedure Button2Click(Sender: TObject);
     procedure Button3Click(Sender: TObject);
+    procedure Timer1Timer(Sender: TObject);
   private
     { Private declarations }
+    FFileStream: TFileStream;
     function GetMD5(const FileName: string): string;
   public
     { Public declarations }
@@ -40,16 +44,15 @@ uses
 function TMainForm.GetMD5(const FileName: string): string;
 var
   idmd5: TIdHashMessageDigest5;
-  fs: TFileStream;
-  // hash: T4x4LongWordRecord;
 begin
   idmd5:= TIdHashMessageDigest5.Create;
-  fs:= TFileStream.Create(fileName, fmOpenRead OR fmShareDenyWrite);
+  FFileStream:= TFileStream.Create(fileName, fmOpenRead OR fmShareDenyWrite);
 
   try
-    Result:= idmd5.HashStreamAsHex(fs);
+    Result:= idmd5.HashStreamAsHex(FFileStream);
   finally
-    fs.Free;
+    FFileStream.Free;
+    FFileStream:= nil;
     idmd5.Free;
   end;
 end;
@@ -84,4 +87,16 @@ begin
   Memo1.Lines.Add(inttostr(FileDrop1.FileCount) + ' Files Dropped')
 end;
 
+procedure TMainForm.Timer1Timer(Sender: TObject);
+begin
+  // Try to show progress, but it do NOT act as expected !!
+  Application.ProcessMessages;
+  if Assigned(FFileStream) then
+  begin
+    Label1.Caption:= inttostr(FFileStream.Position);
+  end;
+  Application.ProcessMessages;
+end;
+
 end.
+
