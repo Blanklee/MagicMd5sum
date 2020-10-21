@@ -5,20 +5,23 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes,
   Vcl.StdCtrls, Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs,
-  IdBaseComponent, IdAntiFreezeBase, FileDrop, IdAntiFreeze;
+  IdBaseComponent, IdAntiFreezeBase, IdAntiFreeze, FileDrop;
 
 type
   TMainForm = class(TForm)
     Button1: TButton;
     Button2: TButton;
     Button3: TButton;
-    FileDrop1: TFileDrop;
+    Button4: TButton;
     Memo1: TMemo;
+    FileDrop1: TFileDrop;
     IdAntiFreeze1: TIdAntiFreeze;
     procedure FileDrop1Drop(Sender: TObject);
     procedure Button1Click(Sender: TObject);
     procedure Button2Click(Sender: TObject);
     procedure Button3Click(Sender: TObject);
+    procedure Button4Click(Sender: TObject);
+    procedure Memo1KeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
   private
     { Private declarations }
     function GetMD5(const FileName: string): string;
@@ -34,7 +37,7 @@ implementation
 {$R *.dfm}
 
 uses
-  IdHashMessageDigest, IdHash;
+  IdHashMessageDigest, IdHash, ClipBrd;
 
 //returns MD5 has for a file
 function TMainForm.GetMD5(const FileName: string): string;
@@ -54,6 +57,16 @@ begin
   end;
 end;
 
+procedure TMainForm.Memo1KeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+begin
+  // Ctrl-A (Select All), Ctrl-C (Copy)
+  if ssCtrl in Shift then
+  begin
+    if (Key = Ord('A')) or (Key = Ord('a')) then Memo1.SelectAll;
+    if (Key = Ord('C')) or (Key = Ord('c')) then ClipBrd.Clipboard.AsText:= Memo1.SelText;
+  end;
+end;
+
 procedure TMainForm.Button1Click(Sender: TObject);
 var
   i: integer;
@@ -70,11 +83,18 @@ end;
 
 procedure TMainForm.Button2Click(Sender: TObject);
 begin
-  FileDrop1.Files.Clear;
-  Memo1.Lines.Clear;
+  // Copy all Text of Memo1 to ClipBoard
+  ClipBrd.Clipboard.AsText:= Memo1.Text;
 end;
 
 procedure TMainForm.Button3Click(Sender: TObject);
+begin
+  FileDrop1.Files.Clear;
+  Memo1.Lines.Clear;
+  Memo1.Lines.Add('Please Drag & Drop Files and click RUN! button.');
+end;
+
+procedure TMainForm.Button4Click(Sender: TObject);
 begin
   Close;
 end;

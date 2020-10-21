@@ -1,9 +1,9 @@
 object MainForm: TMainForm
   Left = 0
   Top = 0
-  Caption = 'Magic MD5SUM v1.0'
-  ClientHeight = 442
-  ClientWidth = 682
+  Caption = 'Magic MD5SUM v1.2'
+  ClientHeight = 465
+  ClientWidth = 749
   Color = clBtnFace
   Font.Charset = HANGEUL_CHARSET
   Font.Color = clWindowText
@@ -12,24 +12,25 @@ object MainForm: TMainForm
   Font.Style = []
   OldCreateOrder = False
   DesignSize = (
-    682
-    442)
+    749
+    465)
   PixelsPerInch = 96
   TextHeight = 16
   object Memo1: TMemo
     Left = 16
     Top = 8
-    Width = 650
-    Height = 354
+    Width = 717
+    Height = 377
     Anchors = [akLeft, akTop, akRight, akBottom]
     Lines.Strings = (
       'Please Drag & Drop Files and click RUN! button.')
     ScrollBars = ssBoth
     TabOrder = 0
+    OnKeyDown = Memo1KeyDown
   end
   object Button1: TButton
-    Left = 152
-    Top = 385
+    Left = 88
+    Top = 408
     Width = 153
     Height = 33
     Anchors = [akLeft, akBottom]
@@ -38,24 +39,34 @@ object MainForm: TMainForm
     OnClick = Button1Click
   end
   object Button2: TButton
-    Left = 328
-    Top = 385
-    Width = 75
+    Left = 264
+    Top = 408
+    Width = 121
     Height = 33
     Anchors = [akLeft, akBottom]
-    Caption = 'Clear'
+    Caption = 'Copy Text'
     TabOrder = 2
     OnClick = Button2Click
   end
   object Button3: TButton
-    Left = 424
-    Top = 385
+    Left = 408
+    Top = 408
+    Width = 75
+    Height = 33
+    Anchors = [akLeft, akBottom]
+    Caption = 'Clear'
+    TabOrder = 3
+    OnClick = Button3Click
+  end
+  object Button4: TButton
+    Left = 504
+    Top = 408
     Width = 75
     Height = 33
     Anchors = [akLeft, akBottom]
     Caption = 'Exit'
-    TabOrder = 3
-    OnClick = Button3Click
+    TabOrder = 4
+    OnClick = Button4Click
   end
   object FileDrop1: TFileDrop
     EnableDrop = True

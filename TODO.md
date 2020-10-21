@@ -1,0 +1,36 @@
+# TODO List
+
+- Implement Ctrl-A, Ctrl-C function on Memo1 \
+  User can conveniently copy Memo1.Text to Clipboard
+
+- Show Progressbar during calculation \
+  Current version do not show any progress, so user do not know how is going until it finishes.
+
+- Improve calculation speed \
+  Current version is too slow during calculation
+
+- Improve screen design \
+  Current design is so poor, it needs some icon, style, etc
+
+- Add Pause & Stop button \
+  User can pause or stop calculation
+
+- Add folder by drag & drop \
+  When drag & drop folder, adds all files in the sub-folders.
+
+- 'Add file' buttons \
+  When using on WinPE there is no way to add files \
+  WinPE do not support drag & drop \
+  So it needs to add 'Add file' button
+
+- Add ActionManager and Toolbar \
+  Current version each buttons acts separately \
+  Integrate all actions into ActionManager \
+  Delete all buttons, instead use Toolbar at the top of the Screen
+
+- Using Thread \
+  Move & Resize freely during calculation
+
+- Support MultiLanguage \
+  Using Delphi MultiLanguage support component
+
