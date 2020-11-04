@@ -27,14 +27,19 @@
   User can conveniently copy Memo1.Text to Clipboard \
   Add 'Clear' button : clear all text on Memo1
 
+- ver 1.3 / 2020.11.04 \
+  Support continuous drop \
+  If files are dropped several times, it is managed accumulatively in FileList \
+  Before, only the last dropped list was processed
+
 <br/>
 
 # ScreenShot :
 
-![v1 2_Eng](https://user-images.githubusercontent.com/26485313/96681079-9e3eff80-13b1-11eb-9d6a-ead7f7a504cc.png)
+![v1 3_Run1](https://user-images.githubusercontent.com/26485313/98084001-88a3fc80-1ebe-11eb-8669-300b0134f3a5.png)
 
-![v1 2_Run](https://user-images.githubusercontent.com/26485313/96681080-9ed79600-13b1-11eb-8e1a-b393b047e8b2.png)
+![v1 3_Run2](https://user-images.githubusercontent.com/26485313/98084006-89d52980-1ebe-11eb-9210-207d3e7d6752.png)
 
-![v1 2_SelectAll](https://user-images.githubusercontent.com/26485313/96681081-9ed79600-13b1-11eb-8f5a-f213f4e98990.png)
+![v1 3_Run3](https://user-images.githubusercontent.com/26485313/98084009-89d52980-1ebe-11eb-8784-50afcd0799a9.png)
 
 <br/><br/>

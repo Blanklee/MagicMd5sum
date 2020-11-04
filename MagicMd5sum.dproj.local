@@ -1,13 +1,13 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <BorlandProject>
 	<Transactions>
-    <Transaction>1899-12-30 00:00:00.000.273,D:\Devel\4.기타개발\MD5SUM\MainForm1.pas=C:\Users\blank\Documents\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
+    <Transaction>1899-12-30 00:00:00.000.273,C:\Users\blank\Documents\Embarcadero\Studio\Projects\Unit1.pas=D:\Devel\4.기타개발\MD5SUM\MainForm1.pas</Transaction>
     <Transaction>1899-12-30 00:00:00.000.858,=C:\Users\blank\Documents\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
     <Transaction>1899-12-30 00:00:00.000.965,=C:\Users\blank\Documents\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
     <Transaction>1899-12-30 00:00:00.000.050,=C:\Users\blank\Documents\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
-    <Transaction>1899-12-30 00:00:00.000.273,D:\Devel\4.기타개발\MD5SUM\MainForm1.dfm=C:\Users\blank\Documents\Embarcadero\Studio\Projects\Unit1.dfm</Transaction>
     <Transaction>1899-12-30 00:00:00.000.451,=D:\Devel\MagicMd5sum\Filedrop.pas</Transaction>
-    <Transaction>1899-12-30 00:00:00.000.668,D:\Devel\MagicMd5sum\MagicMd5sum.dproj=D:\Devel\MagicMd5sum\MyMD5SUM.dproj</Transaction>
-    <Transaction>1899-12-30 00:00:00.000.309,D:\Devel\4.기타개발\MD5SUM\MyMD5SUM.dproj=C:\Users\blank\Documents\Embarcadero\Studio\Projects\Project1.dproj</Transaction>
+    <Transaction>1899-12-30 00:00:00.000.273,C:\Users\blank\Documents\Embarcadero\Studio\Projects\Unit1.dfm=D:\Devel\4.기타개발\MD5SUM\MainForm1.dfm</Transaction>
+    <Transaction>1899-12-30 00:00:00.000.668,D:\Devel\MagicMd5sum\MyMD5SUM.dproj=D:\Devel\MagicMd5sum\MagicMd5sum.dproj</Transaction>
+    <Transaction>1899-12-30 00:00:00.000.309,C:\Users\blank\Documents\Embarcadero\Studio\Projects\Project1.dproj=D:\Devel\4.기타개발\MD5SUM\MyMD5SUM.dproj</Transaction>
   </Transactions>
 </BorlandProject>

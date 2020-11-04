@@ -1,7 +1,7 @@
 object MainForm: TMainForm
   Left = 0
   Top = 0
-  Caption = 'Magic MD5SUM v1.2'
+  Caption = 'Magic MD5SUM v1.3'
   ClientHeight = 465
   ClientWidth = 749
   Color = clBtnFace
@@ -11,6 +11,8 @@ object MainForm: TMainForm
   Font.Name = 'Fixedsys'
   Font.Style = []
   OldCreateOrder = False
+  OnCreate = FormCreate
+  OnDestroy = FormDestroy
   DesignSize = (
     749
     465)

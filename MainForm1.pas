@@ -16,6 +16,8 @@ type
     Memo1: TMemo;
     FileDrop1: TFileDrop;
     IdAntiFreeze1: TIdAntiFreeze;
+    procedure FormCreate(Sender: TObject);
+    procedure FormDestroy(Sender: TObject);
     procedure FileDrop1Drop(Sender: TObject);
     procedure Button1Click(Sender: TObject);
     procedure Button2Click(Sender: TObject);
@@ -24,6 +26,7 @@ type
     procedure Memo1KeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
   private
     { Private declarations }
+    FFileList: TStringList;
     function GetMD5(const FileName: string): string;
   public
     { Public declarations }
@@ -38,6 +41,17 @@ implementation
 
 uses
   IdHashMessageDigest, IdHash, ClipBrd;
+
+procedure TMainForm.FormCreate(Sender: TObject);
+begin
+  // Manage dropped files with FFileList
+  FFileList:= TStringList.Create;
+end;
+
+procedure TMainForm.FormDestroy(Sender: TObject);
+begin
+  FFileList.Free;
+end;
 
 //returns MD5 has for a file
 function TMainForm.GetMD5(const FileName: string): string;
@@ -57,14 +71,17 @@ begin
   end;
 end;
 
-procedure TMainForm.Memo1KeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+procedure TMainForm.FileDrop1Drop(Sender: TObject);
+var
+  i: integer;
 begin
-  // Ctrl-A (Select All), Ctrl-C (Copy)
-  if ssCtrl in Shift then
-  begin
-    if (Key = Ord('A')) or (Key = Ord('a')) then Memo1.SelectAll;
-    if (Key = Ord('C')) or (Key = Ord('c')) then ClipBrd.Clipboard.AsText:= Memo1.SelText;
-  end;
+  // if several dropped FileDrop1 only keeps the last drop
+  // so we must save it into FFileList accumulatively
+  for i:= 1 to FileDrop1.FileCount do
+    FFileList.Add(FileDrop1.Files[i-1]);
+
+  // Show message on the screen
+  Memo1.Lines.Add(inttostr(FileDrop1.FileCount) + ' Files Dropped (Total ' + FFileList.Count.ToString + ' files)');
 end;
 
 procedure TMainForm.Button1Click(Sender: TObject);
@@ -73,9 +90,9 @@ var
   fn, s: string;
 begin
   // Calculate MD5SUM
-  for i:= 1 to FileDrop1.FileCount do
+  for i:= 1 to FFileList.Count do
   begin
-    fn:= FileDrop1.Files[i-1];
+    fn:= FFileList[i-1];
     s:= LowerCase(GetMD5(fn));
     Memo1.Lines.Add(s + ': ' + ExtractFileName(fn));
   end;
@@ -89,7 +106,9 @@ end;
 
 procedure TMainForm.Button3Click(Sender: TObject);
 begin
+  // Clear all, go to initial state
   FileDrop1.Files.Clear;
+  FFileList.Clear;
   Memo1.Lines.Clear;
   Memo1.Lines.Add('Please Drag & Drop Files and click RUN! button.');
 end;
@@ -99,9 +118,15 @@ begin
   Close;
 end;
 
-procedure TMainForm.FileDrop1Drop(Sender: TObject);
+procedure TMainForm.Memo1KeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
 begin
-  Memo1.Lines.Add(inttostr(FileDrop1.FileCount) + ' Files Dropped')
+  // Ctrl-A (Select All) / Ctrl-C (Copy)
+  if ssCtrl in Shift then
+  begin
+    if (Key = Ord('A')) or (Key = Ord('a')) then Memo1.SelectAll;
+    if (Key = Ord('C')) or (Key = Ord('c')) then ClipBrd.Clipboard.AsText:= Memo1.SelText;
+  end;
 end;
 
 end.
+
