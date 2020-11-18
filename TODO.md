@@ -1,19 +1,7 @@
 # TODO List
 
-- Implement Ctrl-A, Ctrl-C function on Memo1 \
-  User can conveniently copy Memo1.Text to Clipboard
-
-- Show Progressbar during calculation \
-  Current version do not show any progress, so user do not know how is going until it finishes.
-
-- Improve calculation speed \
-  Current version is too slow during calculation
-
 - Improve screen design \
   Current design is so poor, it needs some icon, style, etc
-
-- Add Pause & Stop button \
-  User can pause or stop calculation
 
 - Add folder by drag & drop \
   When drag & drop folder, adds all files in the sub-folders.
@@ -33,4 +21,24 @@
 
 - Support MultiLanguage \
   Using Delphi MultiLanguage support component
+
+
+
+# DONE List
+
+- Implement Ctrl-A, Ctrl-C function on Memo1 \
+  User can conveniently copy Memo1.Text to Clipboard \
+  DONE at ver 1.2
+
+- Improve calculation speed \
+  Current version is too slow during calculation
+  DONE at ver 1.4
+
+- Show Progressbar during calculation \
+  Current version do not show any progress, so user do not know how is going until it finishes.
+  DONE at ver 1.4
+
+- Add Pause & Stop button \
+  User can pause or stop calculation
+  DONE at ver 1.4
 

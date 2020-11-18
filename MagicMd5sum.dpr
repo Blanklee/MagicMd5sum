@@ -3,7 +3,9 @@ program MagicMd5sum;
 uses
   Vcl.Forms,
   MainForm1 in 'MainForm1.pas' {MainForm},
-  Filedrop in 'Filedrop.pas';
+  BlankUtils in 'BlankUtils.pas',
+  Filedrop in 'Filedrop.pas',
+  MyHash5 in 'MyHash5.pas';
 
 {$R *.res}
 
