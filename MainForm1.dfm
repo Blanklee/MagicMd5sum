@@ -1,10 +1,12 @@
 object MainForm: TMainForm
   Left = 0
   Top = 0
-  Caption = 'Magic MD5SUM v1.4'
+  Caption = 'Magic MD5SUM v1.4a'
   ClientHeight = 545
   ClientWidth = 682
   Color = clBtnFace
+  Constraints.MinHeight = 480
+  Constraints.MinWidth = 650
   Font.Charset = HANGEUL_CHARSET
   Font.Color = clWindowText
   Font.Height = -16
@@ -23,6 +25,7 @@ object MainForm: TMainForm
     Top = 380
     Width = 63
     Height = 20
+    Anchors = [akLeft, akBottom]
     Caption = 'FileName'
     Font.Charset = HANGEUL_CHARSET
     Font.Color = clWindowText
@@ -36,6 +39,7 @@ object MainForm: TMainForm
     Top = 413
     Width = 25
     Height = 21
+    Anchors = [akLeft, akBottom]
     Caption = 'File'
     Font.Charset = HANGEUL_CHARSET
     Font.Color = clWindowText
@@ -49,6 +53,7 @@ object MainForm: TMainForm
     Top = 445
     Width = 37
     Height = 21
+    Anchors = [akLeft, akBottom]
     Caption = 'Total'
     Font.Charset = HANGEUL_CHARSET
     Font.Color = clWindowText
@@ -63,6 +68,7 @@ object MainForm: TMainForm
     Width = 16
     Height = 16
     Alignment = taRightJustify
+    Anchors = [akRight, akBottom]
     Caption = '0%'
   end
   object totalRate: TLabel
@@ -71,6 +77,7 @@ object MainForm: TMainForm
     Width = 16
     Height = 16
     Alignment = taRightJustify
+    Anchors = [akRight, akBottom]
     Caption = '0%'
   end
   object Memo1: TMemo
@@ -85,16 +92,6 @@ object MainForm: TMainForm
     TabOrder = 0
     OnKeyDown = Memo1KeyDown
   end
-  object btRun1: TButton
-    Left = 24
-    Top = 488
-    Width = 97
-    Height = 33
-    Anchors = [akLeft, akBottom]
-    Caption = 'RUN (v1.3)'
-    TabOrder = 1
-    OnClick = btRunClick
-  end
   object btCopyText: TButton
     Left = 372
     Top = 488
@@ -102,7 +99,7 @@ object MainForm: TMainForm
     Height = 33
     Anchors = [akLeft, akBottom]
     Caption = 'Copy Text'
-    TabOrder = 2
+    TabOrder = 1
     OnClick = btCopyTextClick
   end
   object btClear: TButton
@@ -112,7 +109,7 @@ object MainForm: TMainForm
     Height = 33
     Anchors = [akLeft, akBottom]
     Caption = 'Clear'
-    TabOrder = 3
+    TabOrder = 2
     OnClick = btClearClick
   end
   object btExit: TButton
@@ -122,7 +119,7 @@ object MainForm: TMainForm
     Height = 33
     Anchors = [akLeft, akBottom]
     Caption = 'Exit'
-    TabOrder = 4
+    TabOrder = 3
     OnClick = btExitClick
   end
   object ProgressBar1: TProgressBar
@@ -130,43 +127,45 @@ object MainForm: TMainForm
     Top = 416
     Width = 547
     Height = 17
-    TabOrder = 5
+    Anchors = [akLeft, akRight, akBottom]
+    TabOrder = 4
   end
   object ProgressBar2: TProgressBar
     Left = 72
     Top = 448
     Width = 547
     Height = 17
-    TabOrder = 6
+    Anchors = [akLeft, akRight, akBottom]
+    TabOrder = 5
   end
-  object btRun2: TButton
-    Left = 127
+  object btRun: TButton
+    Left = 72
     Top = 488
-    Width = 97
+    Width = 121
     Height = 33
     Anchors = [akLeft, akBottom]
-    Caption = 'RUN (v1.4)'
-    TabOrder = 7
+    Caption = 'RUN!'
+    TabOrder = 6
     OnClick = btRunClick
   end
   object btPause: TButton
-    Left = 230
+    Left = 199
     Top = 488
     Width = 73
     Height = 33
     Anchors = [akLeft, akBottom]
     Caption = 'Pause'
-    TabOrder = 8
+    TabOrder = 7
     OnClick = btPauseClick
   end
   object btStop: TButton
-    Left = 309
+    Left = 278
     Top = 488
-    Width = 57
+    Width = 73
     Height = 33
     Anchors = [akLeft, akBottom]
     Caption = 'Stop'
-    TabOrder = 9
+    TabOrder = 8
     OnClick = btStopClick
   end
   object FileDrop1: TFileDrop

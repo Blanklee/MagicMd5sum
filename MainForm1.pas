@@ -37,8 +37,7 @@ type
     totalRate: TLabel;
     ProgressBar1: TProgressBar;
     ProgressBar2: TProgressBar;
-    btRun1: TButton;
-    btRun2: TButton;
+    btRun: TButton;
     btPause: TButton;
     btStop: TButton;
     btCopyText: TButton;
@@ -63,7 +62,6 @@ type
     FBuf: array[1..maxRecord] of byte;
     procedure CheckPause;
     function GetTotalSize: int64;
-    function GetMD5(const FileName: string): string;
     function GetMyMD5(const FileName: string): string;
     procedure BeforeRun;
     procedure AfterRun;
@@ -143,7 +141,7 @@ var
   s: string;
 begin
   // Initialize before run
-  btRun2.Enabled:= False;
+  btRun.Enabled:= False;
   btStop.Enabled:= True;
   btPause.Enabled:= True;
   btExit.Enabled:= False;
@@ -166,7 +164,7 @@ var
   s: string;
 begin
   // Finish after run
-  btRun2.Enabled:= True;
+  btRun.Enabled:= True;
   btStop.Enabled:= False;
   if pauseCompare then btPauseClick(Self);
   btPause.Enabled:= False;
@@ -197,24 +195,6 @@ begin
   Result:= 0;
   for i:= 1 to FFileList.Count do
     Inc(Result, File_Size(FFileList[i-1], 0));
-end;
-
-//returns MD5 hash for a file (Conventional method)
-function TMainForm.GetMD5(const FileName: string): string;
-var
-  idmd5: TIdHashMessageDigest5;
-  fs: TFileStream;
-  // hash: T4x4LongWordRecord;
-begin
-  idmd5:= TIdHashMessageDigest5.Create;
-  fs:= TFileStream.Create(fileName, fmOpenRead OR fmShareDenyWrite);
-
-  try
-    Result:= idmd5.HashStreamAsHex(fs);
-  finally
-    fs.Free;
-    idmd5.Free;
-  end;
 end;
 
 //returns MD5 hash for a file (New Improved method)
@@ -313,11 +293,8 @@ begin
     // Feetch 1 file
     fn:= FFileList[i-1];
 
-    if Sender = btRun1
-    // calculate md5sum by v1.3 method (OLD)
-    then s:= LowerCase(GetMD5(fn))
     // calculate md5sum by v1.4 method (NEW)
-    else s:= LowerCase(GetMyMD5(fn));
+    s:= LowerCase(GetMyMD5(fn));
 
     Memo1.Lines.Add(s + ': ' + ExtractFileName(fn));
   end;

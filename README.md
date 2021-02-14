@@ -38,15 +38,19 @@
     . To show rate it gets total bytes from File_Size function (BlankUtils.pas)
   - Support Pause & Stop button
 
+- ver 1.4a / 2021.02.14
+  - Delete 'RUN (v1.3)' button, rename 'RUN (v1.4)' to 'RUN!'
+  - Add icon to project (icon3.ico)
+
 
 <br/>
 
 # ScreenShot :
 
-![Initial](https://user-images.githubusercontent.com/26485313/99491010-53afa380-29ae-11eb-8320-c63046cb0345.png)
+![1_Initial](https://user-images.githubusercontent.com/26485313/107876178-b827c380-6f07-11eb-9d47-9deecdc482f1.png)
 
-![LargeFiles2](https://user-images.githubusercontent.com/26485313/99491017-56aa9400-29ae-11eb-8011-8c7f7b3e4743.png)
+![3_Running](https://user-images.githubusercontent.com/26485313/107876180-b958f080-6f07-11eb-94df-11ff18cfdc08.png)
 
-![LargeFiles5](https://user-images.githubusercontent.com/26485313/99491019-5a3e1b00-29ae-11eb-930d-6c9d60e84004.png)
+![4_Finish](https://user-images.githubusercontent.com/26485313/107876181-b9f18700-6f07-11eb-845c-d5ab8f70ed69.png)
 
 <br/><br/>
