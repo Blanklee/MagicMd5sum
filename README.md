@@ -42,15 +42,19 @@
   - Delete 'RUN (v1.3)' button, rename 'RUN (v1.4)' to 'RUN!'
   - Add icon to project (icon3.ico)
 
+- ver 1.4b / 2021.03.05
+  - btRun, btPause, btStop is replaced from TButton to TBitBtn, add Glyph
+  - Show elapsed time after finishing md5sum calculation
+
 
 <br/>
 
 # ScreenShot :
 
-![1_Initial](https://user-images.githubusercontent.com/26485313/107876178-b827c380-6f07-11eb-9d47-9deecdc482f1.png)
+![1_Initial](https://user-images.githubusercontent.com/26485313/110225170-05ef8480-7f26-11eb-9020-1aa2329815c7.png)
 
-![3_Running](https://user-images.githubusercontent.com/26485313/107876180-b958f080-6f07-11eb-94df-11ff18cfdc08.png)
+![3c_Running](https://user-images.githubusercontent.com/26485313/110225171-08ea7500-7f26-11eb-9156-ce7f892f88b4.png)
 
-![4_Finish](https://user-images.githubusercontent.com/26485313/107876181-b9f18700-6f07-11eb-845c-d5ab8f70ed69.png)
+![4_Finish](https://user-images.githubusercontent.com/26485313/110225172-0ab43880-7f26-11eb-9e8e-3c95a54e8b1b.png)
 
 <br/><br/>
