@@ -5,7 +5,7 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes,
   Vcl.StdCtrls, Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ComCtrls,
-  FileDrop, MyHash5;
+  Vcl.Buttons, FileDrop, MyHash5;
 
 const
   // buf size to compare at once (Test : speed improved until 512KB, little improved more than 512KB)
@@ -37,12 +37,13 @@ type
     totalRate: TLabel;
     ProgressBar1: TProgressBar;
     ProgressBar2: TProgressBar;
-    btRun: TButton;
-    btPause: TButton;
-    btStop: TButton;
+    btRun: TBitBtn;
+    btPause: TBitBtn;
+    btStop: TBitBtn;
     btCopyText: TButton;
     btClear: TButton;
     btExit: TButton;
+    btTemp: TBitBtn;
     FileDrop1: TFileDrop;
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
@@ -57,8 +58,9 @@ type
   private
     { Private declarations }
     FFileList: TStringList;
-    stopCompare: boolean;
     pauseCompare: boolean;
+    stopCompare: boolean;
+    FTime: TDateTime;
     FBuf: array[1..maxRecord] of byte;
     procedure CheckPause;
     function GetTotalSize: int64;
@@ -154,14 +156,15 @@ begin
   fileRate.Caption:= '0%';
   totalRate.Caption:= '0%';
 
-  DatetimeToString(s, 'hh:nn:ss', now);
+  FTime:= Now;
+  DatetimeToString(s, 'hh:nn:ss', FTime);
   Memo1.Lines.Add('');
   Memo1.Lines.Add('[' + s + '] start md5sum calculation...');
 end;
 
 procedure TMainForm.AfterRun;
 var
-  s: string;
+  s, t: string;
 begin
   // Finish after run
   btRun.Enabled:= True;
@@ -170,8 +173,9 @@ begin
   btPause.Enabled:= False;
   btExit.Enabled:= True;
 
-  DatetimeToString(s, 'hh:nn:ss', now);
-  Memo1.Lines.Add('[' + s + '] finish md5sum calculation...');
+  DatetimeToString(s, 'hh:nn:ss', Now);
+  DatetimeToString(t, 'hh:nn:ss', Now-FTime);
+  Memo1.Lines.Add('[' + s + '] finish (' + t + ' elapsed)');
 end;
 
 procedure TMainForm.CheckPause;
@@ -272,7 +276,7 @@ begin
     FFileList.Add(FileDrop1.Files[i-1]);
 
   // Show message on the screen
-  Memo1.Lines.Add(inttostr(FileDrop1.FileCount) + ' Files Dropped (Total ' + FFileList.Count.ToString + ' files)');
+  Memo1.Lines.Add(inttostr(FileDrop1.FileCount) + ' Files Added (Total ' + FFileList.Count.ToString + ' files)');
 end;
 
 procedure TMainForm.btRunClick(Sender: TObject);
@@ -307,9 +311,16 @@ procedure TMainForm.btPauseClick(Sender: TObject);
 begin
   // Pause
   pauseCompare:= not pauseCompare;
-  if pauseCompare
-  then btPause.Caption:= 'Restart'
-  else btPause.Caption:= 'Pause';
+
+  if pauseCompare then
+  begin
+    btPause.Caption:= 'Start';
+    btPause.Glyph:= btRun.Glyph;
+  end else
+  begin
+    btPause.Caption:= 'Pause';
+    btPause.Glyph:= btTemp.Glyph;
+  end;
 end;
 
 procedure TMainForm.btStopClick(Sender: TObject);
