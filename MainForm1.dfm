@@ -1,7 +1,7 @@
 object MainForm: TMainForm
   Left = 0
   Top = 0
-  Caption = 'Magic MD5SUM v1.4b'
+  Caption = 'Magic MD5SUM v1.5'
   ClientHeight = 545
   ClientWidth = 682
   Color = clBtnFace
@@ -232,6 +232,7 @@ object MainForm: TMainForm
     NumGlyphs = 2
     TabOrder = 9
     Visible = False
+    OnClick = btTempClick
   end
   object FileDrop1: TFileDrop
     EnableDrop = True

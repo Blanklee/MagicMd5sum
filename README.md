@@ -46,15 +46,24 @@
   - btRun, btPause, btStop is replaced from TButton to TBitBtn, add Glyph
   - Show elapsed time after finishing md5sum calculation
 
+- ver 1.5 / 2021.03.29
+  - Show total size when file added
+
 
 <br/>
 
 # ScreenShot :
 
-![1_Initial](https://user-images.githubusercontent.com/26485313/110225170-05ef8480-7f26-11eb-9020-1aa2329815c7.png)
+![1_Initial](https://user-images.githubusercontent.com/26485313/112787569-c2ef7f80-9093-11eb-8157-20ffb5159488.png)
 
-![3c_Running](https://user-images.githubusercontent.com/26485313/110225171-08ea7500-7f26-11eb-9156-ce7f892f88b4.png)
+![4_AddFile](https://user-images.githubusercontent.com/26485313/112787581-cbe05100-9093-11eb-957d-a883dc911b34.png)
 
-![4_Finish](https://user-images.githubusercontent.com/26485313/110225172-0ab43880-7f26-11eb-9e8e-3c95a54e8b1b.png)
+![4a_AddFile](https://user-images.githubusercontent.com/26485313/112787585-ce42ab00-9093-11eb-8e45-b64210606a60.png)
+
+![5_Run](https://user-images.githubusercontent.com/26485313/112787597-d39ff580-9093-11eb-820d-ff1369f09f5f.png)
+
+![5a_Run](https://user-images.githubusercontent.com/26485313/112787606-d864a980-9093-11eb-999f-845b827aa593.png)
+
+![5c_Finish](https://user-images.githubusercontent.com/26485313/112787608-da2e6d00-9093-11eb-84f1-97c9ab83911a.png)
 
 <br/><br/>

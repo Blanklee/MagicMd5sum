@@ -17,7 +17,7 @@ type
   TProgressBar = class(Vcl.ComCtrls.TProgressBar)
   private
     FInt32: Boolean;
-    FMax64: int64;
+    FMax64: Int64;
     FPosition64: Int64;
     procedure SetMax64(const Value: Int64);
     procedure SetPosition64(const Value: Int64);
@@ -48,13 +48,14 @@ type
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure FileDrop1Drop(Sender: TObject);
+    procedure Memo1KeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
     procedure btRunClick(Sender: TObject);
     procedure btPauseClick(Sender: TObject);
     procedure btStopClick(Sender: TObject);
     procedure btCopyTextClick(Sender: TObject);
     procedure btClearClick(Sender: TObject);
     procedure btExitClick(Sender: TObject);
-    procedure Memo1KeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+    procedure btTempClick(Sender: TObject);
   private
     { Private declarations }
     FFileList: TStringList;
@@ -63,8 +64,9 @@ type
     FTime: TDateTime;
     FBuf: array[1..maxRecord] of byte;
     procedure CheckPause;
-    function GetTotalSize: int64;
-    function GetMyMD5(const FileName: string): string;
+    function GetTotalSize: Int64;
+    function Int64ToKiloMegaGiga(ASize: Int64): string;
+    function GetMyMd5Sum(const FileName: string): string;
     procedure BeforeRun;
     procedure AfterRun;
   public
@@ -124,6 +126,10 @@ begin
   stopCompare:= False;
   pauseCompare:= false;
   curFile.Caption:= '';
+
+  {$IFOPT D+}
+  btTemp.Show;
+  {$ENDIF}
 end;
 
 procedure TMainForm.FormDestroy(Sender: TObject);
@@ -191,7 +197,7 @@ begin
   until not pauseCompare;
 end;
 
-function TMainForm.GetTotalSize: int64;
+function TMainForm.GetTotalSize: Int64;
 var
   i: integer;
 begin
@@ -201,14 +207,56 @@ begin
     Inc(Result, File_Size(FFileList[i-1], 0));
 end;
 
-//returns MD5 hash for a file (New Improved method)
-function TMainForm.GetMyMD5(const FileName: string): string;
+function TMainForm.Int64ToKiloMegaGiga(ASize: Int64): string;
+const
+  KILO = Int64(1024);
+  MEGA = Int64(KILO * 1024);
+  GIGA = Int64(MEGA * 1024);
+begin
+  // Bytes를 용량에 따라 적당한 단위로 보기좋게 출력한다
+  if ASize < 1000 *    1 then  Result:= inttostr(ASize) + ' Bytes' else
+  if ASize <   10 * KILO then  Result:= Format('%3.2f KB', [ASize / KILO]) else
+  if ASize <  100 * KILO then  Result:= Format('%3.1f KB', [ASize / KILO]) else
+  if ASize < 1000 * KILO then  Result:= Format('%3.0f KB', [ASize / KILO]) else
+  if ASize <   10 * MEGA then  Result:= Format('%3.2f MB', [ASize / MEGA]) else
+  if ASize <  100 * MEGA then  Result:= Format('%3.1f MB', [ASize / MEGA]) else
+  if ASize < 1000 * MEGA then  Result:= Format('%3.0f MB', [ASize / MEGA]) else
+  if ASize <   10 * GIGA then  Result:= Format('%3.2f GB', [ASize / GIGA]) else
+  if ASize <  100 * GIGA then  Result:= Format('%3.1f GB', [ASize / GIGA]) else
+ {if ASize <  100 * GIGA then} Result:= Format('%3.0f GB', [ASize / GIGA]);
+end;
+
+procedure TMainForm.btTempClick(Sender: TObject);
+begin
+  {$IFOPT D+}
+  // Only for Test..
+  Memo1.Lines.Add('');
+  Memo1.Lines.Add('Int64ToKiloMegaGiga Test');
+  Memo1.Lines.Add(Int64ToKiloMegaGiga(1011));
+  Memo1.Lines.Add(Int64ToKiloMegaGiga(12345));
+  Memo1.Lines.Add(Int64ToKiloMegaGiga(101*1024));
+  Memo1.Lines.Add(Int64ToKiloMegaGiga(999*1024));
+  Memo1.Lines.Add(Int64ToKiloMegaGiga(1000*1024));
+  Memo1.Lines.Add(Int64ToKiloMegaGiga(1024*1024));
+  Memo1.Lines.Add(Int64ToKiloMegaGiga(123456));
+  Memo1.Lines.Add(Int64ToKiloMegaGiga(1234567));
+  Memo1.Lines.Add(Int64ToKiloMegaGiga(12345678));
+  Memo1.Lines.Add(Int64ToKiloMegaGiga(123456789));
+  Memo1.Lines.Add(Int64ToKiloMegaGiga(1234567890));
+  Memo1.Lines.Add(Int64ToKiloMegaGiga(12345678901));
+  Memo1.Lines.Add(Int64ToKiloMegaGiga(123456789012));
+  Memo1.Lines.Add(Int64ToKiloMegaGiga(1234567890123));
+  {$ENDIF}
+end;
+
+function TMainForm.GetMyMd5Sum(const FileName: string): string;
 var
   srcFile: TFileStream;
   memStream: TMemoryStream;
   numRead: integer;
   idmd5: TMyIdHashMessageDigest5;
 begin
+  //returns MD5 hash for a file
   if not FileExists(FileName) then exit;
   idmd5:= TMyIdHashMessageDigest5.Create;
   idmd5.InitializeState;
@@ -223,6 +271,10 @@ begin
   fileRate.Caption:= '0%';
 
   try
+    // until v1.3 : only 1 line, very slow, no response
+    // Result:= idmd5.HashStreamAsHex(srcFile);
+
+    // from v1.4 : New Improved method
     repeat
       Application.ProcessMessages;
       CheckPause;
@@ -269,14 +321,16 @@ end;
 procedure TMainForm.FileDrop1Drop(Sender: TObject);
 var
   i: integer;
+  s: string;
 begin
   // if several dropped FileDrop1 only keeps the last drop
   // so we must save it into FFileList accumulatively
   for i:= 1 to FileDrop1.FileCount do
     FFileList.Add(FileDrop1.Files[i-1]);
 
-  // Show message on the screen
-  Memo1.Lines.Add(inttostr(FileDrop1.FileCount) + ' Files Added (Total ' + FFileList.Count.ToString + ' files)');
+  // Show message on the screen (count & size)
+  s:= Int64ToKiloMegaGiga(GetTotalSize);
+  Memo1.Lines.Add(inttostr(FileDrop1.FileCount) + ' Files Added (Total ' + FFileList.Count.ToString + ' files, ' + s + ')');
 end;
 
 procedure TMainForm.btRunClick(Sender: TObject);
@@ -298,7 +352,7 @@ begin
     fn:= FFileList[i-1];
 
     // calculate md5sum by v1.4 method (NEW)
-    s:= LowerCase(GetMyMD5(fn));
+    s:= LowerCase(GetMyMd5Sum(fn));
 
     Memo1.Lines.Add(s + ': ' + ExtractFileName(fn));
   end;
