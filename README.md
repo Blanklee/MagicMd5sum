@@ -2,7 +2,7 @@
 
 - Overview : Windows Graphic UI Program of md5sum, Easy to use.
 
-- Develop Tools : Delphi 10.4.1 using Indy component.
+- Develop Tools : Delphi 10.4.2 using Indy component.
 
 - Usage : Just drop files and click RUN button.
 
@@ -32,38 +32,37 @@
 - ver 1.4 / 2020.11.18
   - Implement much faster speed \
     . with 3.5GB it takes 02:05 at v1.3, 00:11 at v1.4 (8~10 times faster) \
-	. internally use MyHash5, it fetches 512KB at once on calculation
+    . internally use MyHash5, it fetches 512KB at once on calculation
   - Show ProgressBar during run \
     . Derive TProgressBar to implement Int64 for large files bigger than 2GB \
     . To show rate it gets total bytes from File_Size function (BlankUtils.pas)
   - Support Pause & Stop button
 
-- ver 1.4a / 2021.02.14
-  - Delete 'RUN (v1.3)' button, rename 'RUN (v1.4)' to 'RUN!'
-  - Add icon to project (icon3.ico)
+- ver 1.4a / 2021.02.14 \
+  . Delete 'RUN (v1.3)' button, rename 'RUN (v1.4)' to 'RUN!'
+  . Add icon to project (icon3.ico)
 
-- ver 1.4b / 2021.03.05
-  - btRun, btPause, btStop is replaced from TButton to TBitBtn, add Glyph
-  - Show elapsed time after finishing md5sum calculation
+- ver 1.4b / 2021.03.05 \
+  . btRun, btPause, btStop is replaced from TButton to TBitBtn, add Glyph
+  . Show elapsed time after finishing md5sum calculation
 
-- ver 1.5 / 2021.03.29
-  - Show total size when file added
+- ver 1.5 / 2021.03.29 \
+  . Show total size when file added
+
+- ver 1.5a / 2021.04.11 \
+  . Apply 'Sky' style, design changed
 
 
 <br/>
 
-# ScreenShot :
+# ScreenShots :
 
-![1_Initial](https://user-images.githubusercontent.com/26485313/112787569-c2ef7f80-9093-11eb-8157-20ffb5159488.png)
+![1_Initial](https://user-images.githubusercontent.com/26485313/114305135-d843bf80-9b11-11eb-9ec5-fc84a03ac26e.png)
 
-![4_AddFile](https://user-images.githubusercontent.com/26485313/112787581-cbe05100-9093-11eb-957d-a883dc911b34.png)
+![2_Run](https://user-images.githubusercontent.com/26485313/114305136-d974ec80-9b11-11eb-9d5b-d09eccfa6f1e.png)
 
-![4a_AddFile](https://user-images.githubusercontent.com/26485313/112787585-ce42ab00-9093-11eb-8e45-b64210606a60.png)
+![3_Run](https://user-images.githubusercontent.com/26485313/114305137-d974ec80-9b11-11eb-97b5-6ad1c439601e.png)
 
-![5_Run](https://user-images.githubusercontent.com/26485313/112787597-d39ff580-9093-11eb-820d-ff1369f09f5f.png)
-
-![5a_Run](https://user-images.githubusercontent.com/26485313/112787606-d864a980-9093-11eb-999f-845b827aa593.png)
-
-![5c_Finish](https://user-images.githubusercontent.com/26485313/112787608-da2e6d00-9093-11eb-84f1-97c9ab83911a.png)
+![4_Finish](https://user-images.githubusercontent.com/26485313/114305138-da0d8300-9b11-11eb-918f-98b64f832e41.png)
 
 <br/><br/>

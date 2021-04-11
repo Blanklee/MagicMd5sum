@@ -1,9 +1,6 @@
 # TODO List
 
-- Improve screen design \
-  Current design is so poor, it needs some icon, style, etc
-
-- Add folder by drag & drop \
+- Support folder drag & drop to add files \
   When drag & drop folder, adds all files in the sub-folders.
 
 - 'Add file' buttons \
@@ -41,4 +38,8 @@
 - Add Pause & Stop button \
   User can pause or stop calculation
   DONE at ver 1.4
+
+- Improve screen design \
+  Current design is so poor, it needs some icon, button, style, etc
+  DONE at ver 1.4a, 1.4b, 1.5a
 

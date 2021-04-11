@@ -5,13 +5,16 @@ uses
   MainForm1 in 'MainForm1.pas' {MainForm},
   BlankUtils in 'BlankUtils.pas',
   Filedrop in 'Filedrop.pas',
-  MyHash5 in 'MyHash5.pas';
+  MyHash5 in 'MyHash5.pas',
+  Vcl.Themes,
+  Vcl.Styles;
 
 {$R *.res}
 
 begin
   Application.Initialize;
   Application.MainFormOnTaskbar := True;
+  TStyleManager.TrySetStyle('Sky');
   Application.CreateForm(TMainForm, MainForm);
   Application.Run;
 end.
