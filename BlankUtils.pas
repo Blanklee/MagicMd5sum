@@ -11,6 +11,7 @@ uses
 function File_Age(AFileName: string): integer;
 function File_Exists(AFileName: string): boolean;
 function File_Size(AFileName: string; Default: int64=-1): int64;
+function IsDirectory(AFileName: string): boolean;
 
 
 implementation
@@ -83,6 +84,13 @@ function File_Size(AFileName: string; Default: int64=-1): int64;
 begin
   if not File_Exists(AFileName) then Result:= Default
   else Result:= FileInfo.FileSize;
+end;
+
+function IsDirectory(AFileName: string): boolean;
+begin
+  // True if Directory, False if File
+  GetFileInfo(AFileName);
+  Result:= (FileInfo.FileAttr and faDirectory <> 0);
 end;
 
 Initialization

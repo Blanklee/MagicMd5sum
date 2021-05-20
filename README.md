@@ -52,17 +52,20 @@
 - ver 1.5a / 2021.04.11 \
   . Apply 'Sky' style, design changed
 
+- ver 1.6 / 2021.05.20 \
+  . Support adding directory : all files in the directory are added
+
 
 <br/>
 
 # ScreenShots :
 
-![1_Initial](https://user-images.githubusercontent.com/26485313/114305135-d843bf80-9b11-11eb-9ec5-fc84a03ac26e.png)
+![1_Initial](https://user-images.githubusercontent.com/26485313/119003690-e31f2900-b9c8-11eb-95ef-150a40c002c7.png)
 
-![2_Run](https://user-images.githubusercontent.com/26485313/114305136-d974ec80-9b11-11eb-9d5b-d09eccfa6f1e.png)
+Add 4 Files and Click Run
+![2_Add 4 Files](https://user-images.githubusercontent.com/26485313/119003695-e4505600-b9c8-11eb-853c-f6d3acd57fdc.png)
 
-![3_Run](https://user-images.githubusercontent.com/26485313/114305137-d974ec80-9b11-11eb-97b5-6ad1c439601e.png)
-
-![4_Finish](https://user-images.githubusercontent.com/26485313/114305138-da0d8300-9b11-11eb-918f-98b64f832e41.png)
+Add 1 Directory (including 23 files in it) and Click Run
+![3_Add 1 Directory](https://user-images.githubusercontent.com/26485313/119003697-e4505600-b9c8-11eb-8458-312851693856.png)
 
 <br/><br/>

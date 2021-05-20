@@ -1,8 +1,5 @@
 # TODO List
 
-- Support folder drag & drop to add files \
-  When drag & drop folder, adds all files in the sub-folders.
-
 - 'Add file' buttons \
   When using on WinPE there is no way to add files \
   WinPE do not support drag & drop \
@@ -42,4 +39,8 @@
 - Improve screen design \
   Current design is so poor, it needs some icon, button, style, etc
   DONE at ver 1.4a, 1.4b, 1.5a
+
+- Support folder drag & drop to add files \
+  When drag & drop folder, adds all files in the sub-folders.
+  DONE at ver 1.6
 

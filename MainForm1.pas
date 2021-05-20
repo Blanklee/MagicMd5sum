@@ -67,6 +67,7 @@ type
     function GetTotalSize: Int64;
     function Int64ToKiloMegaGiga(ASize: Int64): string;
     function GetMyMd5Sum(const FileName: string): string;
+    procedure Get_SubDirectory(FolderName: string; PathLength: integer);
     procedure BeforeRun;
     procedure AfterRun;
   public
@@ -121,6 +122,7 @@ procedure TMainForm.FormCreate(Sender: TObject);
 begin
   // Manage dropped files with FFileList
   FFileList:= TStringList.Create;
+  FFileList.NameValueSeparator:= '|';
 
   // Initialize members
   stopCompare:= False;
@@ -143,6 +145,33 @@ end;
 
 // -----------------------------------------------------------------------------
 // Private functions
+
+procedure TMainForm.Get_SubDirectory(FolderName: string; PathLength: integer);
+var
+  sr: TSearchRec;
+begin
+  // find first file in FolderName, then FFileList.Add
+  if FindFirst(FolderName+'\*.*', faAnyFile, sr) <> 0 then exit;
+  begin
+    // run recursively if Directory, FFileList.Add if File
+    if (sr.Name <> '.') and (sr.Name <> '..') then
+    if sr.Attr and faDirectory <> 0
+    then Get_SubDirectory(FolderName+'\'+sr.Name, PathLength)
+    else FFileList.AddObject(FolderName+'\'+sr.Name, Pointer(PathLength));
+  end;
+
+  // find all file in FolderName, then FFileList.Add
+  while FindNext(sr) = 0 do
+  begin
+    // run recursively if Directory, FFileList.Add if File
+    if (sr.Name <> '.') and (sr.Name <> '..') then
+    if sr.Attr and faDirectory <> 0
+    then Get_SubDirectory(FolderName+'\'+sr.Name, PathLength)
+    else FFileList.AddObject(FolderName+'\'+sr.Name, Pointer(PathLength));
+  end;
+
+  FindClose (sr);
+end;
 
 procedure TMainForm.BeforeRun;
 var
@@ -320,23 +349,36 @@ end;
 
 procedure TMainForm.FileDrop1Drop(Sender: TObject);
 var
-  i: integer;
-  s: string;
+  i, a, PathLength: integer;
+  s, FileName: string;
 begin
-  // if several dropped FileDrop1 only keeps the last drop
-  // so we must save it into FFileList accumulatively
+  // save FileCount before adding files
+  a:= FFileList.Count;
+
+  // If several dropped FileDrop1 only keeps the last drop,
+  // so we must save it into FFileList accumulatively.
   for i:= 1 to FileDrop1.FileCount do
-    FFileList.Add(FileDrop1.Files[i-1]);
+  begin
+    // PathLength: length of original path, save for later use - output filepath removed original path
+    FileName:= FileDrop1.Files[i-1];
+    PathLength:= Length(ExtractFilePath(FileName));
+
+    // When folder is dropped, add all files in the folder.
+    if IsDirectory(FileName)
+    then Get_SubDirectory(FileName, PathLength)
+    else FFileList.AddObject(FileName, Pointer(PathLength));
+  end;
 
   // Show message on the screen (count & size)
   s:= Int64ToKiloMegaGiga(GetTotalSize);
-  Memo1.Lines.Add(inttostr(FileDrop1.FileCount) + ' Files Added (Total ' + FFileList.Count.ToString + ' files, ' + s + ')');
+  a:= FFileList.Count - a;
+  Memo1.Lines.Add(a.ToString + ' Files Added (Total ' + FFileList.Count.ToString + ' files, ' + s + ')');
 end;
 
 procedure TMainForm.btRunClick(Sender: TObject);
 var
-  i: integer;
-  fn, s: string;
+  i, pl: integer;
+  fn, sum: string;
 begin
   // Initialize before run
   if FFileList.Count = 0 then exit;
@@ -352,9 +394,13 @@ begin
     fn:= FFileList[i-1];
 
     // calculate md5sum by v1.4 method (NEW)
-    s:= LowerCase(GetMyMd5Sum(fn));
+    sum:= LowerCase(GetMyMd5Sum(fn));
 
-    Memo1.Lines.Add(s + ': ' + ExtractFileName(fn));
+    // Output: delete first PathLength bytes from FullName,
+    // show only relative path from base directory
+    pl:= Integer(FFileList.Objects[i-1]);
+    Delete(fn, 1, pl);
+    Memo1.Lines.Add(sum + ': ' + fn);
   end;
 
   // Finish after run
