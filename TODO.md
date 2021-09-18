@@ -1,10 +1,5 @@
 # TODO List
 
-- 'Add file' buttons \
-  When using on WinPE there is no way to add files \
-  WinPE do not support drag & drop \
-  So it needs to add 'Add file' button
-
 - Add ActionManager and Toolbar \
   Current version each buttons acts separately \
   Integrate all actions into ActionManager \
@@ -43,4 +38,10 @@
 - Support folder drag & drop to add files \
   When drag & drop folder, adds all files in the sub-folders.
   DONE at ver 1.6
+
+- 'Open' buttons \
+  When using on WinPE there is no way to add files \
+  WinPE do not support drag & drop \
+  So it needs to add 'Open file' button
+  DONE at ver 1.7
 

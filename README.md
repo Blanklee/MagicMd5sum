@@ -39,11 +39,11 @@
   - Support Pause & Stop button
 
 - ver 1.4a / 2021.02.14 \
-  . Delete 'RUN (v1.3)' button, rename 'RUN (v1.4)' to 'RUN!'
+  . Delete 'RUN (v1.3)' button, rename 'RUN (v1.4)' to 'RUN!' \
   . Add icon to project (icon3.ico)
 
 - ver 1.4b / 2021.03.05 \
-  . btRun, btPause, btStop is replaced from TButton to TBitBtn, add Glyph
+  . btRun, btPause, btStop is replaced from TButton to TBitBtn, add Glyph \
   . Show elapsed time after finishing md5sum calculation
 
 - ver 1.5 / 2021.03.29 \
@@ -55,17 +55,21 @@
 - ver 1.6 / 2021.05.20 \
   . Support adding directory : all files in the directory are added
 
+- ver 1.7 / 2021.09.18 \
+  . Open button added : on WinPE we can also add files by Open dialog \
+  . Add shortcut key at each buttons \
+  . Disable Open, Clear button while Running calculation
+
 
 <br/>
 
 # ScreenShots :
 
-![1_Initial](https://user-images.githubusercontent.com/26485313/119003690-e31f2900-b9c8-11eb-95ef-150a40c002c7.png)
+![01_Main](https://user-images.githubusercontent.com/26485313/133889363-b2ff6da5-62b1-450e-be8d-864edf59be83.png)
 
-Add 4 Files and Click Run
-![2_Add 4 Files](https://user-images.githubusercontent.com/26485313/119003695-e4505600-b9c8-11eb-853c-f6d3acd57fdc.png)
+![02_Run](https://user-images.githubusercontent.com/26485313/133889364-56630cb2-28e9-4216-ae74-0f467c3dd8a8.png)
 
-Add 1 Directory (including 23 files in it) and Click Run
-![3_Add 1 Directory](https://user-images.githubusercontent.com/26485313/119003697-e4505600-b9c8-11eb-8458-312851693856.png)
+![03_Finish](https://user-images.githubusercontent.com/26485313/133889365-5e85dfa1-c5d8-4b5d-84d5-30a24ab6e8ef.png)
+
 
 <br/><br/>

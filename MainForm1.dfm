@@ -1,7 +1,7 @@
 object MainForm: TMainForm
   Left = 0
   Top = 0
-  Caption = 'Magic MD5SUM v1.6'
+  Caption = 'Magic MD5SUM v1.7'
   ClientHeight = 545
   ClientWidth = 682
   Color = clBtnFace
@@ -12,13 +12,12 @@ object MainForm: TMainForm
   Font.Height = -16
   Font.Name = 'Fixedsys'
   Font.Style = []
-  OldCreateOrder = False
   OnCreate = FormCreate
   OnDestroy = FormDestroy
+  PixelsPerInch = 96
   DesignSize = (
     682
     545)
-  PixelsPerInch = 96
   TextHeight = 16
   object curFile: TLabel
     Left = 24
@@ -87,7 +86,7 @@ object MainForm: TMainForm
     Height = 354
     Anchors = [akLeft, akTop, akRight, akBottom]
     Lines.Strings = (
-      'Please Drag & Drop Files and click RUN! button.')
+      'Please Open or Drop Files and click RUN! button.')
     ScrollBars = ssBoth
     TabOrder = 0
     OnKeyDown = Memo1KeyDown
@@ -98,8 +97,8 @@ object MainForm: TMainForm
     Width = 89
     Height = 33
     Anchors = [akLeft, akBottom]
-    Caption = 'Copy Text'
-    TabOrder = 6
+    Caption = '&Copy Text'
+    TabOrder = 7
     OnClick = btCopyTextClick
   end
   object btClear: TButton
@@ -108,8 +107,8 @@ object MainForm: TMainForm
     Width = 73
     Height = 33
     Anchors = [akLeft, akBottom]
-    Caption = 'Clear'
-    TabOrder = 7
+    Caption = 'C&lear'
+    TabOrder = 8
     OnClick = btClearClick
   end
   object btExit: TButton
@@ -118,8 +117,8 @@ object MainForm: TMainForm
     Width = 73
     Height = 33
     Anchors = [akLeft, akBottom]
-    Caption = 'Exit'
-    TabOrder = 8
+    Caption = 'E&xit'
+    TabOrder = 9
     OnClick = btExitClick
   end
   object ProgressBar1: TProgressBar
@@ -139,12 +138,12 @@ object MainForm: TMainForm
     TabOrder = 2
   end
   object btRun: TBitBtn
-    Left = 72
+    Left = 24
     Top = 488
-    Width = 121
+    Width = 89
     Height = 33
     Anchors = [akLeft, akBottom]
-    Caption = 'RUN!'
+    Caption = '&RUN!'
     Glyph.Data = {
       76010000424D7601000000000000760000002800000020000000100000000100
       0400000000000001000000000000000000001000000010000000000000000000
@@ -163,12 +162,13 @@ object MainForm: TMainForm
     OnClick = btRunClick
   end
   object btPause: TBitBtn
-    Left = 199
+    Left = 119
     Top = 488
     Width = 73
     Height = 33
     Anchors = [akLeft, akBottom]
-    Caption = 'Pause'
+    Caption = '&Pause'
+    Enabled = False
     Glyph.Data = {
       76010000424D7601000000000000760000002800000020000000100000000100
       0400000000000001000000000000000000001000000010000000000000000000
@@ -187,12 +187,13 @@ object MainForm: TMainForm
     OnClick = btPauseClick
   end
   object btStop: TBitBtn
-    Left = 278
+    Left = 198
     Top = 488
     Width = 73
     Height = 33
     Anchors = [akLeft, akBottom]
-    Caption = 'Stop'
+    Caption = '&Stop'
+    Enabled = False
     Glyph.Data = {
       76010000424D7601000000000000760000002800000020000000100000000100
       0400000000000001000000000000000000001000000000000000000000000000
@@ -230,15 +231,31 @@ object MainForm: TMainForm
       333333373F3373F33333333777F3777F333333377F3377F33333333333333333
       3333333333333333333333333333333333333333333333333333}
     NumGlyphs = 2
-    TabOrder = 9
+    TabOrder = 10
     Visible = False
     OnClick = btTempClick
+  end
+  object btOpen: TButton
+    Left = 293
+    Top = 488
+    Width = 73
+    Height = 33
+    Anchors = [akLeft, akBottom]
+    Caption = '&Open'
+    TabOrder = 6
+    OnClick = btOpenClick
   end
   object FileDrop1: TFileDrop
     EnableDrop = True
     DropControl = Owner
     OnDrop = FileDrop1Drop
     Left = 72
+    Top = 72
+  end
+  object OpenDialog1: TOpenDialog
+    Filter = 'All Files (*.*)|*.*'
+    Options = [ofHideReadOnly, ofAllowMultiSelect, ofEnableSizing]
+    Left = 144
     Top = 72
   end
 end

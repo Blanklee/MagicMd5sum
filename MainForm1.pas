@@ -40,11 +40,13 @@ type
     btRun: TBitBtn;
     btPause: TBitBtn;
     btStop: TBitBtn;
+    btOpen: TButton;
     btCopyText: TButton;
     btClear: TButton;
     btExit: TButton;
     btTemp: TBitBtn;
     FileDrop1: TFileDrop;
+    OpenDialog1: TOpenDialog;
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure FileDrop1Drop(Sender: TObject);
@@ -56,6 +58,7 @@ type
     procedure btClearClick(Sender: TObject);
     procedure btExitClick(Sender: TObject);
     procedure btTempClick(Sender: TObject);
+    procedure btOpenClick(Sender: TObject);
   private
     { Private declarations }
     FFileList: TStringList;
@@ -181,6 +184,8 @@ begin
   btRun.Enabled:= False;
   btStop.Enabled:= True;
   btPause.Enabled:= True;
+  btOpen.Enabled:= False;
+  btClear.Enabled:= False;
   btExit.Enabled:= False;
   stopCompare := False;
   pauseCompare:= False;
@@ -206,7 +211,11 @@ begin
   btStop.Enabled:= False;
   if pauseCompare then btPauseClick(Self);
   btPause.Enabled:= False;
+  btOpen.Enabled:= True;
+  btClear.Enabled:= True;
   btExit.Enabled:= True;
+  stopCompare := False;
+  pauseCompare:= False;
 
   DatetimeToString(s, 'hh:nn:ss', Now);
   DatetimeToString(t, 'hh:nn:ss', Now-FTime);
@@ -243,7 +252,7 @@ const
   GIGA = Int64(MEGA * 1024);
 begin
   // Bytes를 용량에 따라 적당한 단위로 보기좋게 출력한다
-  if ASize < 1000 *    1 then  Result:= inttostr(ASize) + ' Bytes' else
+  if ASize < 1000 *    1 then  Result:= ASize.ToString + ' Bytes' else
   if ASize <   10 * KILO then  Result:= Format('%3.2f KB', [ASize / KILO]) else
   if ASize <  100 * KILO then  Result:= Format('%3.1f KB', [ASize / KILO]) else
   if ASize < 1000 * KILO then  Result:= Format('%3.0f KB', [ASize / KILO]) else
@@ -375,6 +384,28 @@ begin
   Memo1.Lines.Add(a.ToString + ' Files Added (Total ' + FFileList.Count.ToString + ' files, ' + s + ')');
 end;
 
+procedure TMainForm.btOpenClick(Sender: TObject);
+var
+  i, PathLength: integer;
+  s, FileName: string;
+begin
+  // Open File with DialogBox
+  if not OpenDialog1.Execute then exit;
+
+  // refer FileDrop1Drop
+  // Add selected files (except Directory - cannot select at OpenDialog1)
+  for i:= 1 to OpenDialog1.Files.Count do
+  begin
+    FileName:= OpenDialog1.Files[i-1];
+    PathLength:= Length(ExtractFilePath(FileName));
+    FFileList.AddObject(FileName, Pointer(PathLength));
+  end;
+
+  // Show message on the screen (count & size)
+  s:= Int64ToKiloMegaGiga(GetTotalSize);
+  Memo1.Lines.Add(OpenDialog1.Files.Count.ToString + ' Files Added (Total ' + FFileList.Count.ToString + ' files, ' + s + ')');
+end;
+
 procedure TMainForm.btRunClick(Sender: TObject);
 var
   i, pl: integer;
@@ -393,6 +424,7 @@ begin
     // Feetch 1 file
     fn:= FFileList[i-1];
 
+    // the Core 1 line : call GetMyMd5Sum
     // calculate md5sum by v1.4 method (NEW)
     sum:= LowerCase(GetMyMd5Sum(fn));
 
@@ -443,7 +475,7 @@ begin
   FileDrop1.Files.Clear;
   FFileList.Clear;
   Memo1.Lines.Clear;
-  Memo1.Lines.Add('Please Drag & Drop Files and click RUN! button.');
+  Memo1.Lines.Add('Please Open or Drop Files and click RUN! button.');
 
   curFile.Caption:= '';
   ProgressBar1.Max64:= 100;
@@ -461,11 +493,12 @@ end;
 
 procedure TMainForm.Memo1KeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
 begin
-  // Ctrl-A (Select All) / Ctrl-C (Copy)
+  // Ctrl-A (Select All) / Ctrl-C (Copy) / Ctrl-O (Open)
   if ssCtrl in Shift then
   begin
     if (Key = Ord('A')) or (Key = Ord('a')) then Memo1.SelectAll;
     if (Key = Ord('C')) or (Key = Ord('c')) then ClipBrd.Clipboard.AsText:= Memo1.SelText;
+    if (Key = Ord('O')) or (Key = Ord('o')) then btOpenClick(Sender);
   end;
 end;
 
