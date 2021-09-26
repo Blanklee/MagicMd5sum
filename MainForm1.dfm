@@ -1,7 +1,7 @@
 object MainForm: TMainForm
   Left = 0
   Top = 0
-  Caption = 'Magic MD5SUM v1.7'
+  Caption = 'Magic MD5SUM v1.8'
   ClientHeight = 545
   ClientWidth = 682
   Color = clBtnFace
@@ -19,6 +19,18 @@ object MainForm: TMainForm
     682
     545)
   TextHeight = 16
+  object Memo1: TMemo
+    Left = 16
+    Top = 8
+    Width = 650
+    Height = 354
+    Anchors = [akLeft, akTop, akRight, akBottom]
+    Lines.Strings = (
+      'Please Open or Drop Files and click RUN! button.')
+    ScrollBars = ssBoth
+    TabOrder = 0
+    OnKeyDown = Memo1KeyDown
+  end
   object curFile: TLabel
     Left = 24
     Top = 380
@@ -78,48 +90,6 @@ object MainForm: TMainForm
     Alignment = taRightJustify
     Anchors = [akRight, akBottom]
     Caption = '0%'
-  end
-  object Memo1: TMemo
-    Left = 16
-    Top = 8
-    Width = 650
-    Height = 354
-    Anchors = [akLeft, akTop, akRight, akBottom]
-    Lines.Strings = (
-      'Please Open or Drop Files and click RUN! button.')
-    ScrollBars = ssBoth
-    TabOrder = 0
-    OnKeyDown = Memo1KeyDown
-  end
-  object btCopyText: TButton
-    Left = 372
-    Top = 488
-    Width = 89
-    Height = 33
-    Anchors = [akLeft, akBottom]
-    Caption = '&Copy Text'
-    TabOrder = 7
-    OnClick = btCopyTextClick
-  end
-  object btClear: TButton
-    Left = 467
-    Top = 488
-    Width = 73
-    Height = 33
-    Anchors = [akLeft, akBottom]
-    Caption = 'C&lear'
-    TabOrder = 8
-    OnClick = btClearClick
-  end
-  object btExit: TButton
-    Left = 546
-    Top = 488
-    Width = 73
-    Height = 33
-    Anchors = [akLeft, akBottom]
-    Caption = 'E&xit'
-    TabOrder = 9
-    OnClick = btExitClick
   end
   object ProgressBar1: TProgressBar
     Left = 72
@@ -211,6 +181,46 @@ object MainForm: TMainForm
     TabOrder = 5
     OnClick = btStopClick
   end
+  object btOpen: TButton
+    Left = 293
+    Top = 488
+    Width = 73
+    Height = 33
+    Anchors = [akLeft, akBottom]
+    Caption = '&Open'
+    TabOrder = 6
+    OnClick = btOpenClick
+  end
+  object btCopyText: TButton
+    Left = 372
+    Top = 488
+    Width = 89
+    Height = 33
+    Anchors = [akLeft, akBottom]
+    Caption = '&Copy Text'
+    TabOrder = 7
+    OnClick = btCopyTextClick
+  end
+  object btClear: TButton
+    Left = 467
+    Top = 488
+    Width = 73
+    Height = 33
+    Anchors = [akLeft, akBottom]
+    Caption = 'C&lear'
+    TabOrder = 8
+    OnClick = btClearClick
+  end
+  object btExit: TButton
+    Left = 546
+    Top = 488
+    Width = 73
+    Height = 33
+    Anchors = [akLeft, akBottom]
+    Caption = 'E&xit'
+    TabOrder = 9
+    OnClick = btExitClick
+  end
   object btTemp: TBitBtn
     Left = 625
     Top = 492
@@ -234,16 +244,6 @@ object MainForm: TMainForm
     TabOrder = 10
     Visible = False
     OnClick = btTempClick
-  end
-  object btOpen: TButton
-    Left = 293
-    Top = 488
-    Width = 73
-    Height = 33
-    Anchors = [akLeft, akBottom]
-    Caption = '&Open'
-    TabOrder = 6
-    OnClick = btOpenClick
   end
   object FileDrop1: TFileDrop
     EnableDrop = True

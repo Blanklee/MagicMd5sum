@@ -5,12 +5,7 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes,
   Vcl.StdCtrls, Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ComCtrls,
-  Vcl.Buttons, FileDrop, MyHash5;
-
-const
-  // buf size to compare at once (Test : speed improved until 512KB, little improved more than 512KB)
-  maxRecord = 1024 * 512;
-  maxRecord32 = maxRecord div 4;
+  Vcl.Buttons, FileDrop, MyThread1;
 
 type
   // To use Int64 with Max & Position (up to 2TB)
@@ -54,25 +49,25 @@ type
     procedure btRunClick(Sender: TObject);
     procedure btPauseClick(Sender: TObject);
     procedure btStopClick(Sender: TObject);
+    procedure btOpenClick(Sender: TObject);
     procedure btCopyTextClick(Sender: TObject);
     procedure btClearClick(Sender: TObject);
     procedure btExitClick(Sender: TObject);
     procedure btTempClick(Sender: TObject);
-    procedure btOpenClick(Sender: TObject);
   private
     { Private declarations }
     FFileList: TStringList;
     pauseCompare: boolean;
     stopCompare: boolean;
     FTime: TDateTime;
-    FBuf: array[1..maxRecord] of byte;
-    procedure CheckPause;
+    Md5Thread: TMyThread;
     function GetTotalSize: Int64;
     function Int64ToKiloMegaGiga(ASize: Int64): string;
-    function GetMyMd5Sum(const FileName: string): string;
     procedure Get_SubDirectory(FolderName: string; PathLength: integer);
     procedure BeforeRun;
-    procedure AfterRun;
+    procedure AfterRun(Sender: TObject);
+    procedure Md5ThreadFileRead(numRead: integer);
+    procedure Md5ThreadFileStep(Index: integer; Sum: string);
   public
     { Public declarations }
   end;
@@ -85,7 +80,7 @@ implementation
 {$R *.dfm}
 
 uses
-  IdHashMessageDigest, IdHash, ClipBrd, Math, BlankUtils;
+  ClipBrd, Math, BlankUtils;
 
 { TProgressBar }
 
@@ -202,7 +197,7 @@ begin
   Memo1.Lines.Add('[' + s + '] start md5sum calculation...');
 end;
 
-procedure TMainForm.AfterRun;
+procedure TMainForm.AfterRun(Sender: TObject);
 var
   s, t: string;
 begin
@@ -220,19 +215,6 @@ begin
   DatetimeToString(s, 'hh:nn:ss', Now);
   DatetimeToString(t, 'hh:nn:ss', Now-FTime);
   Memo1.Lines.Add('[' + s + '] finish (' + t + ' elapsed)');
-end;
-
-procedure TMainForm.CheckPause;
-begin
-  // Check if the Pause button is pressed
-  if pauseCompare then
-  repeat
-    // Wait while processing other events
-    Application.ProcessMessages;
-    // exit loop if Stop button is pressed
-    if stopCompare then break;
-    // exit loop if Restart button is pressed
-  until not pauseCompare;
 end;
 
 function TMainForm.GetTotalSize: Int64;
@@ -285,68 +267,6 @@ begin
   Memo1.Lines.Add(Int64ToKiloMegaGiga(123456789012));
   Memo1.Lines.Add(Int64ToKiloMegaGiga(1234567890123));
   {$ENDIF}
-end;
-
-function TMainForm.GetMyMd5Sum(const FileName: string): string;
-var
-  srcFile: TFileStream;
-  memStream: TMemoryStream;
-  numRead: integer;
-  idmd5: TMyIdHashMessageDigest5;
-begin
-  //returns MD5 hash for a file
-  if not FileExists(FileName) then exit;
-  idmd5:= TMyIdHashMessageDigest5.Create;
-  idmd5.InitializeState;
-  srcFile:= TFileStream.Create(fileName, fmOpenRead OR fmShareDenyWrite);
-  srcFile.Seek(0, soBeginning);
-  memStream:= TMemoryStream.Create;
-  memStream.Seek(0, soBeginning);
-
-  curFile.Caption:= FileName;
-  ProgressBar1.Max64:= srcFile.Size;
-  ProgressBar1.Position64:= 0;
-  fileRate.Caption:= '0%';
-
-  try
-    // until v1.3 : only 1 line, very slow, no response
-    // Result:= idmd5.HashStreamAsHex(srcFile);
-
-    // from v1.4 : New Improved method
-    repeat
-      Application.ProcessMessages;
-      CheckPause;
-      if stopCompare then break;
-
-      // read maxRecord bytes. numRead is bytes actually read
-      numRead:= srcFile.Read(FBuf, maxRecord);
-      if numRead = 0 then break;
-
-      // show progress bytes read
-      ProgressBar1.StepBy64(numRead);
-      fileRate.Caption:= inttostr(Floor(ProgressBar1.Position64/ProgressBar1.Max64*100)) + '%';
-      ProgressBar2.StepBy64(numRead);
-      totalRate.Caption:= inttostr(Floor(ProgressBar2.Position64/ProgressBar2.Max64*100)) + '%';
-
-      // prepare data into memStream as bytes read
-      memStream.Seek(0, soBeginning);
-      memStream.Write(FBuf, numRead);
-      memStream.Seek(0, soBeginning);
-
-      // Depends on whether it is the body or the tail
-      if srcFile.Position < srcFile.Size then
-        idmd5.HashBody(memStream, numRead)
-      else begin
-        Result:= idmd5.HashTail(memStream, numRead, srcFile.Size);
-        break;
-      end;
-    until false;
-
-  finally
-    idmd5.Free;
-    memStream.Free;
-    srcFile.Free;
-  end;
 end;
 
 
@@ -407,36 +327,23 @@ begin
 end;
 
 procedure TMainForm.btRunClick(Sender: TObject);
-var
-  i, pl: integer;
-  fn, sum: string;
 begin
   // Initialize before run
   if FFileList.Count = 0 then exit;
   BeforeRun;
 
-  // Calculate MD5SUM
-  for i:= 1 to FFileList.Count do
-  begin
-    // Check if Stop button is pressed
-    if stopCompare then break;
+  // Sort FileList
+  FFileList.Sort;
 
-    // Feetch 1 file
-    fn:= FFileList[i-1];
+  // Create thread and Start!
+  Md5Thread:= TMyThread.Create(FFileList);
+  Md5Thread.OnFileRead:= Md5ThreadFileRead;
+  Md5Thread.OnFileStep:= Md5ThreadFileStep;
+  Md5Thread.OnTerminate:= AfterRun;
+  Md5Thread.Start;
 
-    // the Core 1 line : call GetMyMd5Sum
-    // calculate md5sum by v1.4 method (NEW)
-    sum:= LowerCase(GetMyMd5Sum(fn));
-
-    // Output: delete first PathLength bytes from FullName,
-    // show only relative path from base directory
-    pl:= Integer(FFileList.Objects[i-1]);
-    Delete(fn, 1, pl);
-    Memo1.Lines.Add(sum + ': ' + fn);
-  end;
-
-  // Finish after run
-  AfterRun;
+  // Finish after run => OnTerminate
+  // AfterRun;
 end;
 
 procedure TMainForm.btPauseClick(Sender: TObject);
@@ -446,10 +353,12 @@ begin
 
   if pauseCompare then
   begin
+    // Md5Thread.Suspend;
     btPause.Caption:= 'Start';
     btPause.Glyph:= btRun.Glyph;
   end else
   begin
+    // Md5Thread.Resume;
     btPause.Caption:= 'Pause';
     btPause.Glyph:= btTemp.Glyph;
   end;
@@ -461,6 +370,9 @@ begin
   stopCompare:= true;
   // if paused than go to continue state
   if pauseCompare then btPauseClick(Sender);
+
+  // Stop thread
+  Md5Thread.Terminate;
 end;
 
 procedure TMainForm.btCopyTextClick(Sender: TObject);
@@ -499,6 +411,49 @@ begin
     if (Key = Ord('A')) or (Key = Ord('a')) then Memo1.SelectAll;
     if (Key = Ord('C')) or (Key = Ord('c')) then ClipBrd.Clipboard.AsText:= Memo1.SelText;
     if (Key = Ord('O')) or (Key = Ord('o')) then btOpenClick(Sender);
+  end;
+end;
+
+
+
+
+
+// -----------------------------------------------------------------------------
+// Thread event functions
+
+procedure TMainForm.Md5ThreadFileRead(numRead: integer);
+begin
+  // come here after read file as numRead bytes in thread
+  ProgressBar1.StepBy64(numRead);
+  fileRate.Caption:= inttostr(Floor(ProgressBar1.Position64/ProgressBar1.Max64*100)) + '%';
+  ProgressBar2.StepBy64(numRead);
+  totalRate.Caption:= inttostr(Floor(ProgressBar2.Position64/ProgressBar2.Max64*100)) + '%';
+end;
+
+procedure TMainForm.Md5ThreadFileStep(Index: integer; Sum: string);
+var
+  pl: integer;
+  FileName: string;
+begin
+  FileName:= FFileList[Index];
+
+  // Before run 1 file in thread (Sum = '')
+  if Sum = '' then
+  begin
+    // Show filename, initialize file size
+    curFile.Caption:= FileName;
+    ProgressBar1.Max64:= File_Size(FileName, 0);
+    ProgressBar1.Position64:= 0;
+    fileRate.Caption:= '0%';
+  end
+
+  // After run 1 file in thread (Sum <> '')
+  else begin
+    // Output: delete first PathLength bytes from FullName,
+    // show only relative path from base directory
+    pl:= Integer(FFileList.Objects[Index]);
+    Delete(FileName, 1, pl);
+    Memo1.Lines.Add(Sum + ': ' + FileName);
   end;
 end;
 

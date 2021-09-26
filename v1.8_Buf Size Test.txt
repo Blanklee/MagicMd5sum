@@ -1,0 +1,36 @@
+[ Elapsed time test by Buf size ]
+
+4 files, 2.16GB
+
+Show = Show ProgressBar & Percent on MainForm
+Hide = Skip ProgressBar & Percent on MainForm
+Note : Tested as 32bit (a little faster at 64bit)
+
+
+v1.7
+
+Buf	Show	Hide
+0.5MB	19s	7s
+1MB	13s	7s
+2MB	11s	7s => pick 11s
+3MB	10s	7s
+4MB	10s	7s
+8MB	9s	7s
+
+
+v1.8
+
+Buf	Show	Hide
+0.5MB	9s	7s
+1MB	8s	7s
+2MB	8s	7s => pick 8s
+3MB	8s	7s
+4MB	8s	7s
+8MB	8s	7s
+
+
+Test result :
+Showing ProgressBar & Percent take quite a lot of time
+The best choice seems to be 2MB
+On thread it got faster (11s => 8s)
+

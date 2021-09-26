@@ -6,6 +6,7 @@ uses
   BlankUtils in 'BlankUtils.pas',
   Filedrop in 'Filedrop.pas',
   MyHash5 in 'MyHash5.pas',
+  MyThread1 in 'MyThread1.pas',
   Vcl.Themes,
   Vcl.Styles;
 

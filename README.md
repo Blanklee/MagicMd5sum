@@ -2,7 +2,7 @@
 
 - Overview : Windows Graphic UI Program of md5sum, Easy to use.
 
-- Develop Tools : Delphi 10.4.2 using Indy component.
+- Develop Tools : Delphi 11 using Indy component.
 
 - Usage : Just drop files and click RUN button.
 
@@ -60,16 +60,21 @@
   . Add shortcut key at each buttons \
   . Disable Open, Clear button while Running calculation
 
+- ver 1.8 / 2021.09.26 \
+  . Implement thread based calculation \
+  . Sort file list \
+  . Improve more fast
+
 
 <br/>
 
 # ScreenShots :
 
-![01_Main](https://user-images.githubusercontent.com/26485313/133889363-b2ff6da5-62b1-450e-be8d-864edf59be83.png)
+![1_Main](https://user-images.githubusercontent.com/26485313/134811841-83301b1d-3c6a-4653-99ae-dc8b572b8559.png)
 
-![02_Run](https://user-images.githubusercontent.com/26485313/133889364-56630cb2-28e9-4216-ae74-0f467c3dd8a8.png)
+![2_Run1](https://user-images.githubusercontent.com/26485313/134811844-e691af94-101c-4ae5-a955-2bb5d683aa16.png)
 
-![03_Finish](https://user-images.githubusercontent.com/26485313/133889365-5e85dfa1-c5d8-4b5d-84d5-30a24ab6e8ef.png)
-
+![3_Finish](https://user-images.githubusercontent.com/26485313/134811845-20d920fe-c42b-447e-8cf4-906bbf76aa00.png)
 
 <br/><br/>
+
