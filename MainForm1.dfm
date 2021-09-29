@@ -1,7 +1,7 @@
 object MainForm: TMainForm
   Left = 0
   Top = 0
-  Caption = 'Magic MD5SUM v1.8'
+  Caption = 'Magic MD5SUM v1.8a'
   ClientHeight = 545
   ClientWidth = 682
   Color = clBtnFace
@@ -19,18 +19,6 @@ object MainForm: TMainForm
     682
     545)
   TextHeight = 16
-  object Memo1: TMemo
-    Left = 16
-    Top = 8
-    Width = 650
-    Height = 354
-    Anchors = [akLeft, akTop, akRight, akBottom]
-    Lines.Strings = (
-      'Please Open or Drop Files and click RUN! button.')
-    ScrollBars = ssBoth
-    TabOrder = 0
-    OnKeyDown = Memo1KeyDown
-  end
   object curFile: TLabel
     Left = 24
     Top = 380
@@ -90,6 +78,18 @@ object MainForm: TMainForm
     Alignment = taRightJustify
     Anchors = [akRight, akBottom]
     Caption = '0%'
+  end
+  object Memo1: TMemo
+    Left = 16
+    Top = 8
+    Width = 650
+    Height = 354
+    Anchors = [akLeft, akTop, akRight, akBottom]
+    Lines.Strings = (
+      'Please Open or Drop Files and click RUN! button.')
+    ScrollBars = ssBoth
+    TabOrder = 0
+    OnKeyDown = Memo1KeyDown
   end
   object ProgressBar1: TProgressBar
     Left = 72

@@ -3,7 +3,7 @@ unit MyThread1;
 interface
 
 uses
-  Classes;
+  Classes, System.SyncObjs;
 
 const
   // buf size to compare at once (Test by Buf Size)
@@ -18,12 +18,15 @@ type
 
   TMyThread = class(TThread)
   private
+    FEvent: TEvent;
+    FPaused: boolean;
     FFileList: TStringList;
     FIndex: integer;
     FSum: string;
     FBuf: array[1..maxRecord] of byte;
     numRead: integer;
     function GetMyMd5Sum(const FileName: string): string;
+    procedure SetPaused(const Value: boolean);
     // Synchronize function for VCL output
     procedure VisualOnFileRead;
     procedure VisualOnFileStep;
@@ -33,6 +36,9 @@ type
     procedure Execute; override;
   public
     constructor Create(FileList: TStringList);
+    destructor Destroy; override;
+    // for Pause
+    property Paused: boolean read FPaused write SetPaused;
     // Event hole for VCL output on MainForm by Synchronize function
     property OnFileRead: TFileReadEvent read FOnFileRead write FOnFileRead;
     property OnFileStep: TFileStepEvent read FOnFileStep write FOnFileStep;
@@ -46,6 +52,10 @@ uses MyHash5, System.SysUtils;
 
 constructor TMyThread.Create(FileList: TStringList);
 begin
+  // Initialize members
+  FPaused:= False;
+  FEvent:= TEvent.Create(nil, True, not FPaused, '');
+
   // FileList written at Main
   FFileList:= FileList;
 
@@ -54,6 +64,26 @@ begin
 
   // Create thread, suspended mode (True)
   inherited Create(True);
+end;
+
+destructor TMyThread.Destroy;
+begin
+  Terminate;
+  FEvent.SetEvent;
+  WaitFor;
+  FEvent.Free;
+  inherited;
+end;
+
+procedure TMyThread.SetPaused(const Value: boolean);
+begin
+  if (not Terminated) and (FPaused <> Value) then
+  begin
+    FPaused:= Value;
+    if FPaused
+    then FEvent.ResetEvent
+    else FEvent.SetEvent;
+  end;
 end;
 
 procedure TMyThread.VisualOnFileRead;
@@ -83,6 +113,7 @@ begin
 
     // break loop if thread is terminated
     if Terminated then break;
+    FEvent.WaitFor(INFINITE);
 
     // Fetch 1 file
     FIndex:= i-1;
@@ -95,6 +126,9 @@ begin
     // the Core 1 line : call GetMyMd5Sum
     // calculate md5sum by v1.4 method (NEW)
     FSum:= LowerCase(GetMyMd5Sum(fn));
+
+    // Skip below Sync(VCL) if stopped during calculation
+    if Terminated then break;
 
     // Synchronize(VisualOnFileStep) 함수로 대체
     // FullName에서 앞쪽 PathLength만큼 삭제후 출력
@@ -141,6 +175,7 @@ begin
 
       // break loop if thread is terminated
       if Terminated then break;
+      FEvent.WaitFor(INFINITE);
 
       // read maxRecord bytes. numRead is bytes actually read
       numRead:= srcFile.Read(FBuf, maxRecord);
@@ -176,3 +211,4 @@ begin
 end;
 
 end.
+

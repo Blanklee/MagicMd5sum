@@ -62,19 +62,23 @@
 
 - ver 1.8 / 2021.09.26 \
   . Implement thread based calculation \
-  . Sort file list \
+  . Sort file list when click Run button \
   . Improve more fast
+
+- ver 1.8a / 2021.09.29 \
+  . Manage FileList auto sorted and unique \
+  . Implement Pause button
 
 
 <br/>
 
 # ScreenShots :
 
-![1_Main](https://user-images.githubusercontent.com/26485313/134811841-83301b1d-3c6a-4653-99ae-dc8b572b8559.png)
+![1_Main](https://user-images.githubusercontent.com/26485313/135238418-f7e55780-9dad-4ce0-8c6a-0e9ad2c3ff5d.png)
 
-![2_Run1](https://user-images.githubusercontent.com/26485313/134811844-e691af94-101c-4ae5-a955-2bb5d683aa16.png)
+![2_Run1](https://user-images.githubusercontent.com/26485313/135238425-66c6046b-681a-4ca5-8332-6e2350a1576b.png)
 
-![3_Finish](https://user-images.githubusercontent.com/26485313/134811845-20d920fe-c42b-447e-8cf4-906bbf76aa00.png)
+![3_Finish](https://user-images.githubusercontent.com/26485313/135238428-d2984b86-e20a-4eed-9045-0da7e18ec2b1.png)
 
 <br/><br/>
 

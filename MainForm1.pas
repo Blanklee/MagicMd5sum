@@ -58,7 +58,6 @@ type
     { Private declarations }
     FFileList: TStringList;
     pauseCompare: boolean;
-    stopCompare: boolean;
     FTime: TDateTime;
     Md5Thread: TMyThread;
     function GetTotalSize: Int64;
@@ -121,9 +120,12 @@ begin
   // Manage dropped files with FFileList
   FFileList:= TStringList.Create;
   FFileList.NameValueSeparator:= '|';
+  // Auto Sorted, Prevent duplicate files
+  FFileList.Sorted:= True;
+  FFileList.Duplicates:= TDuplicates.dupIgnore;
+  FFileList.CaseSensitive:= False;
 
   // Initialize members
-  stopCompare:= False;
   pauseCompare:= false;
   curFile.Caption:= '';
 
@@ -182,7 +184,6 @@ begin
   btOpen.Enabled:= False;
   btClear.Enabled:= False;
   btExit.Enabled:= False;
-  stopCompare := False;
   pauseCompare:= False;
 
   ProgressBar2.Max64:= GetTotalSize;
@@ -209,7 +210,6 @@ begin
   btOpen.Enabled:= True;
   btClear.Enabled:= True;
   btExit.Enabled:= True;
-  stopCompare := False;
   pauseCompare:= False;
 
   DatetimeToString(s, 'hh:nn:ss', Now);
@@ -333,7 +333,7 @@ begin
   BeforeRun;
 
   // Sort FileList
-  FFileList.Sort;
+  // FFileList.Sort;
 
   // Create thread and Start!
   Md5Thread:= TMyThread.Create(FFileList);
@@ -353,12 +353,12 @@ begin
 
   if pauseCompare then
   begin
-    // Md5Thread.Suspend;
+    Md5Thread.Paused:= True;
     btPause.Caption:= 'Start';
     btPause.Glyph:= btRun.Glyph;
   end else
   begin
-    // Md5Thread.Resume;
+    Md5Thread.Paused:= False;
     btPause.Caption:= 'Pause';
     btPause.Glyph:= btTemp.Glyph;
   end;
@@ -366,9 +366,7 @@ end;
 
 procedure TMainForm.btStopClick(Sender: TObject);
 begin
-  // Stop
-  stopCompare:= true;
-  // if paused than go to continue state
+  // if paused than firstly go to continue state
   if pauseCompare then btPauseClick(Sender);
 
   // Stop thread
